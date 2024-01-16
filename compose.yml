@@ -1,0 +1,47 @@
+version: '3.9'
+services:
+  dashboard:
+    build: .
+    container_name: ${DASHBOARD_CONTAINER}
+    networks:
+      - apinetwork
+    ports:
+      - "${DASHBOARD_PORT}:${DASHBOARD_PORT}"
+    environment:
+      - DASHBOARD_HOST=${DASHBOARD_HOST}
+      - DASHBOARD_PORT=${DASHBOARD_PORT}
+      - DASHBOARD_RELOAD=${DASHBOARD_RELOAD}
+      - SECRET_KEY=${SECRET_KEY}
+      - API_URL=${API_URL}
+      - API_PORT=${API_PORT}
+    # depends_on:
+    #   - nginx
+    command: python main.py
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "${DASHBOARD_CONTAINER}:${DASHBOARD_PORT}/dashboard/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+networks:
+  apinetwork:
+    name: ${API_NETWORK}
+    external: true
+
+  # nginx:
+  #   build: nginx/.
+  #   container_name: ${NGINX_CONTAINER}
+  #   ports:
+  #     - "80:80"
+  #   environment:
+  #     - DASHBOARD_CONTAINER=${DASHBOARD_CONTAINER}
+  #     - DASHBOARD_PORT=${DASHBOARD_PORT}
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD", "service", "nginx", "status"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 30s

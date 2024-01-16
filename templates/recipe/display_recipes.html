@@ -1,0 +1,38 @@
+{% extends 'dashboard_base.html' %}
+
+{% block title %} Recipes {% endblock title %}
+
+{% block content %} 
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Recipes</h1>
+  </div>
+
+  <ol>
+    {% for recipe in recipes %}
+      <li>
+        {{ recipe.name }}
+      </li>
+      </br>
+    {% endfor %}
+  </ol>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Cooking Time</th>
+        <th scope="col">Number of People</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for recipe in recipes %}
+        <tr>
+          <td><a class="btn btn-default" href="#">{{ recipe.name }}</a></td>
+          <td>{{ recipe.cooking_time }}</td>
+          <td>{{ recipe.no_person }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}
